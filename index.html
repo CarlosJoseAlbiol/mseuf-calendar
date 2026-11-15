@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MSEUF Concert Singers · Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#f0c53f;--gold2:#c99a1c;--ink:#f6ece8;--mut:#c4aaa3;--panel:rgba(43,5,7,.88);--line:rgba(212,166,42,.35);--ok:#7fd9a1;--bad:#ff8f86;--warn:#ffc266;--serif:"Cormorant Garamond",Georgia,serif}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;min-height:100vh;font:15px/1.5 Figtree,system-ui,sans-serif;color:var(--ink);background:radial-gradient(120% 90% at 20% 0%,#751019 0%,#4a0a10 40%,#250305 100%) fixed}
+body::after{content:"";position:fixed;right:-140px;bottom:-80px;width:520px;height:520px;background:url(logo.jpg) center/cover;border-radius:50%;opacity:.16;mix-blend-mode:screen;pointer-events:none}
+#login,#shell{position:relative;z-index:1}
+a{color:var(--gold)}
+h2{font:600 32px var(--serif);color:var(--gold);margin:0}h3{font:600 24px var(--serif);color:var(--gold);margin:0 0 8px}h4{margin:10px 0 4px;font-size:13px;color:var(--gold)}
+.sub{margin:2px 0 0;color:var(--mut)}small,.hint{color:var(--mut)}.empty{color:var(--mut);padding:20px 0}
+.lines{height:30px;margin:14px 0;background:repeating-linear-gradient(to bottom,rgba(240,197,63,.4) 0 1px,transparent 1px 7px)}
+/* login */
+#login{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center}
+.hero{text-align:center;padding:32px}.hero img{width:250px;height:250px;border-radius:50%;object-fit:cover;border:3px solid var(--gold2);box-shadow:0 0 0 12px rgba(212,166,42,.13)}
+.hero h1{font:600 46px var(--serif);color:var(--gold);margin:26px 0 0}.hero .lines{width:340px;max-width:80%;margin:14px auto}.hero p{max-width:320px;margin:0 auto;color:var(--mut)}
+.lr{min-height:100vh;display:grid;place-items:center;border-left:1px solid var(--line);padding:24px}
+.lcard{width:min(440px,100%);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px;margin:14px 0}
+.seg button{flex:1;border:0;background:none;color:var(--gold);font-weight:700;border-radius:999px;padding:9px 6px}
+.seg button.on{background:linear-gradient(#f7da72,#d9a82a);color:#2a0305}
+.err{color:var(--bad);min-height:1.2em;margin:10px 0 0}
+.between{justify-content:space-between;font-size:14px}
+/* app */
+header{background:rgba(26,3,5,.92);border-bottom:1px solid var(--line);padding:8px 18px;display:flex;gap:12px;align-items:center}
+.logo{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--gold2)}
+header h1{font:700 19px var(--serif);color:var(--gold);margin:0;line-height:1.1}header p{margin:0;font-size:12px;color:var(--mut)}
+#who{margin-left:auto;display:flex;gap:12px;align-items:center;text-align:right;font-size:13px}.who b{display:block}
+nav{display:flex;gap:6px;padding:10px 18px 0;overflow-x:auto;max-width:1100px;margin:0 auto}
+nav button{border:0;background:none;color:var(--mut);padding:10px 14px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap;border-radius:0}
+nav button.on{color:var(--gold);border-color:var(--gold)}
+#bar{max-width:1100px;margin:0 auto;padding:10px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--mut)}
+main{max-width:1100px;margin:0 auto;padding:10px 18px 60px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}.row>.sp{flex:1}
+button{font:inherit;border:1px solid var(--line);background:transparent;color:var(--gold);border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:600}
+button:hover{border-color:var(--gold)}
+button.pri,button.gold{background:linear-gradient(#f7da72,#d9a82a);color:#2a0305;border-color:#d9a82a;padding:9px 20px}
+button.wide{width:100%;margin-top:6px;padding:12px}button.link{border:0;padding:0;color:var(--ink);text-align:left}button.link:hover{color:var(--gold)}
+input,select,textarea{font:inherit;color:var(--ink);background:#1c0305;border:1px solid var(--line);border-radius:8px;padding:9px 11px;max-width:100%}
+input::placeholder{color:#8f7872}input[type=checkbox]{accent-color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.card,.day,.line,.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.card{padding:14px 18px;margin:12px 0}.card p{margin:6px 0}.card b{font-size:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0 18px}
+.stat{padding:14px 18px;color:var(--mut)}.stat b{display:block;font:600 38px var(--serif);color:var(--gold);line-height:1.1}
+.tag{border:1px solid var(--gold2);color:var(--gold);border-radius:999px;padding:1px 10px;font-size:12px;font-weight:600}
+.ok,.s-yes,.s-free{color:var(--ok);font-weight:600}.bad,.s-no{color:var(--bad);font-weight:600}.s-busy{color:var(--warn);font-weight:600}
+.me{background:rgba(0,0,0,.25);border-radius:10px;padding:10px 12px;margin:10px 0}
+details summary{cursor:pointer;color:var(--gold);font-weight:600}
+.day{padding:10px 16px;margin:10px 0}.cls{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding:6px 0;border-top:1px dashed var(--line)}.cls span:last-child{margin-left:auto}
+.line{padding:8px 14px}.line.sel{border-color:var(--gold)}.line>.link{min-width:220px}
+dialog{background:#2b0507;color:var(--ink);border:1px solid var(--gold2);border-radius:14px;padding:20px;width:min(440px,94vw)}dialog::backdrop{background:#000a}
+label{display:block;margin:8px 0;font-size:13px;color:var(--mut)}#bar label,.row label{display:inline-flex;gap:6px;align-items:center;margin:0}
+.lcard input:not([type=checkbox]),dialog input:not([type=checkbox]),dialog select,dialog textarea{width:100%;display:block;margin-top:4px}
+.days label{display:inline-flex;gap:4px;align-items:center;margin-right:8px;color:var(--ink)}
+#toast{position:fixed;bottom:16px;left:50%;transform:translate(-50%,90px);background:var(--gold);color:#2a0305;font-weight:600;padding:10px 18px;border-radius:999px;transition:.2s;max-width:90vw;z-index:9}#toast.show{transform:translate(-50%,0)}
+@media(max-width:800px){#login{grid-template-columns:1fr}.lr{border-left:0;min-height:0}.hero img{width:170px;height:170px}.hero h1{font-size:36px}#who .who{display:none}}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+</style></head><body>
+<div id="login" hidden><section class="hero"><img src="logo.jpg" alt="MSEUF Concert Singers logo"><h1>Availability Planner</h1><div class="lines"></div><p>Check who is free for rehearsals and events, and keep class schedules up to date.</p></section><section class="lr"><div class="lcard" id="lcard"></div></section></div>
+<div id="shell" hidden><header><img class="logo" src="logo.jpg" alt="" onerror="this.remove()"><div><h1>MSEUF Concert Singers</h1><p>Availability Planner</p></div><div id="who"></div></header>
+<nav id="tabs"></nav><div id="bar"></div><main id="app"></main></div><dialog id="dlg"></dialog><div id="toast" role="status"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+// ====== 1. PASTE YOUR FIREBASE CONFIG (Project settings → Your apps → Web app) ======
+const firebaseConfig={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT",storageBucket:"YOUR_PROJECT.appspot.com",messagingSenderId:"000000000000",appId:"YOUR_APP_ID"};
+// ====== 2. First Master of Initiation (can add other staff in the Access tab). Use lowercase Gmail ======
+const OWNERS=["your-email@gmail.com"];
+
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore(),auth=firebase.auth();
+const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],CODE={M:1,T:2,W:3,Th:4,F:5,S:6};
+const ROLES={trainee:"Trainee",member:"Member",senior:"Senior member",mi:"Master of Initiation"};
+const STAFF_ROLES={member:"Member",senior:"Senior member",mi:"Master of Initiation"};
+const LBL={yes:"Available (confirmed)",free:"Available",busy:"Class conflict",no:"Not available"};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const t2m=t=>{const[h,m]=t.split(":");return +h*60+ +m};
+const t12=t=>{let[h,m]=t.split(":");h=+h;return(h%12||12)+":"+m+(h<12?" AM":" PM")};
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const dstr=s=>new Date(s+"T00:00").toLocaleDateString("en-PH",{weekday:"short",month:"short",day:"numeric",year:"numeric"});
+const opts=(o,sel)=>Object.entries(o).map(([k,v])=>`<option value="${k}" ${k===sel?"selected":""}>${v}</option>`).join("");
+const fld=(l,n,v,t="text",r)=>`<label>${l}<input name="${n}" type="${t}" value="${esc(v)}" ${r?"required":""}></label>`;
+const parseDays=s=>[...s.matchAll(/Th|M|T|W|F|S/g)].map(m=>CODE[m[0]]);
+
+let people=[],events=[],staffList=[],role=null,user=null,tab="events",me=localStorage.getItem("me")||"",viewPid="",showPast=false,unsubStaff=null;
+const tmr=new Date();tmr.setDate(tmr.getDate()+1);
+let f={date:iso(tmr),start:"16:00",end:"18:00",aud:"trainee"};
+
+function toast(m){const t=$("#toast");t.textContent=m;t.className="show";clearTimeout(toast.t);toast.t=setTimeout(()=>t.className="",3500)}
+const openDlg=h=>{$("#dlg").innerHTML=h;$("#dlg").showModal()},closeDlg=()=>$("#dlg").close();
+const fail=e=>toast(e.message||String(e));
+
+// ---------- availability logic ----------
+function status(p,ev){
+  const r=(ev.responses||{})[p.id],dow=new Date(ev.date+"T00:00").getDay();
+  const c=(p.classes||[]).find(c=>c.days.includes(dow)&&t2m(c.start)<t2m(ev.end)&&t2m(ev.start)<t2m(c.end));
+  if(r==="no")return{s:"no",why:"Marked not available"};
+  if(r==="yes")return{s:"yes",why:c?"Confirmed, even with class: "+c.subject:"Confirmed available"};
+  return c?{s:"busy",why:"Class: "+c.subject+" ("+t12(c.start)+"–"+t12(c.end)+")"}:{s:"free",why:"No class conflict"};
+}
+const byName=(a,b)=>(a.name||"").localeCompare(b.name||"");
+
+// ---------- data ----------
+db.collection("people").onSnapshot(s=>{people=s.docs.map(d=>({id:d.id,...d.data()})).sort(byName);render()},fail);
+db.collection("events").onSnapshot(s=>{events=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));render()},fail);
+let viewer=localStorage.getItem("viewer")==="1",lt="trainee",lmode="in",lmsg="";
+auth.onAuthStateChanged(async u=>{
+  user=u;role=null;if(unsubStaff){unsubStaff();unsubStaff=null}
+  if(u){
+    const em=u.email.toLowerCase(),ref=db.collection("staff").doc(em);
+    try{const s=await ref.get();
+      if(s.exists)role=s.data().role;
+      else if(OWNERS.includes(em)){await ref.set({role:"mi"});role="mi"}
+    }catch(e){fail(e)}
+    if(role)unsubStaff=db.collection("staff").onSnapshot(s=>{staffList=s.docs.map(d=>({id:d.id,...d.data()}));render()},fail);
+    else{lt="staff";lmsg=em+" is not on the staff list. Ask a Master of Initiation to add you.";auth.signOut()}
+  }
+  render();
+});
+const nice=x=>({"auth/invalid-credential":"Wrong email or password.","auth/email-already-in-use":"That email already has an account. Sign in instead.","auth/weak-password":"Password needs at least 6 characters.","auth/too-many-requests":"Too many tries. Wait a bit and try again."})[x.code]||x.message;
+function renderLogin(){
+  const sw=(k,l)=>`<button class="${lt===k?"on":""}" onclick="lt='${k}';lmsg='';renderLogin()">${l}</button>`;
+  $("#lcard").innerHTML=`<h2>${lt==="trainee"?"Welcome, trainee":lmode==="up"?"Create account":"Sign in"}</h2><div class="seg">${sw("trainee","Trainee")}${sw("staff","Master / Senior Member")}</div>`+
+  (lt==="trainee"?`<p class="sub">No login needed. Open the planner to update your class schedule and tell us if you’re available for rehearsals and events.</p><button class="gold wide" onclick="enterViewer()">Continue to planner</button>`:
+  `<form onsubmit="staffAuth(event)"><label>Email<input name="email" type="email" placeholder="you@example.com" required autocomplete="email"></label><label>Password<input name="password" type="password" minlength="6" placeholder="At least 6 characters" required autocomplete="${lmode==="up"?"new-password":"current-password"}"></label><button class="gold wide">${lmode==="up"?"Create account":"Sign in"}</button></form>
+  <div class="row between"><span>${lmode==="up"?"Have an account?":"New here?"} <a href="#" onclick="lmode='${lmode==="up"?"in":"up"}';lmsg='';renderLogin();return false">${lmode==="up"?"Sign in":"Create an account"}</a></span><a href="#" onclick="resetPw();return false">Forgot password?</a></div><p class="hint">Only Masters of Initiation, senior members and members on the staff list can get in.</p>`)+`<p class="err" id="lm" role="alert">${esc(lmsg)}</p>`;
+}
+function staffAuth(e){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));$("#lm").textContent="";
+  (lmode==="up"?auth.createUserWithEmailAndPassword(d.email,d.password):auth.signInWithEmailAndPassword(d.email,d.password)).catch(x=>$("#lm").textContent=nice(x))}
+function resetPw(){const em=$("#lcard [name=email]").value.trim();if(!em)return $("#lm").textContent="Type your email first.";
+  auth.sendPasswordResetEmail(em).then(()=>$("#lm").textContent="Reset link sent. Check your email.").catch(x=>$("#lm").textContent=nice(x))}
+function enterViewer(){viewer=true;localStorage.setItem("viewer","1");render()}
+function leave(){viewer=false;localStorage.removeItem("viewer");lt=role?"staff":"trainee";role?auth.signOut():render()}
+
+// ---------- render ----------
+const go=k=>{tab=k;render()};
+function render(){
+  const inApp=!!role||viewer;$("#login").hidden=inApp;$("#shell").hidden=!inApp;
+  if(!inApp)return renderLogin();
+  const T=role?[["events","Events"],["people","People"],["finder","Who’s free"],["access","Access"]]:[["events","Events"],["mine","My schedule"],["finder","Who’s free"]];
+  if(!T.some(t=>t[0]===tab))tab="events";
+  $("#who").innerHTML=role?`<div class="who"><b>${esc(user.email)}</b><small>${ROLES[role]}</small></div><button onclick="leave()">Sign out</button>`:`<div class="who"><b>Trainee view</b><small>No login needed</small></div><button onclick="leave()">Staff sign in</button>`;
+  $("#tabs").innerHTML=T.map(([k,l])=>`<button class="${k===tab?"on":""}" onclick="go('${k}')">${l}</button>`).join("");
+  $("#bar").innerHTML=`<label>I am: <select onchange="setMe(this.value)"><option value="">— choose your name —</option>${people.map(p=>`<option value="${p.id}" ${p.id===me?"selected":""}>${esc(p.name)}</option>`).join("")}</select></label><button onclick="addPerson()">I’m not listed</button>`;
+  $("#app").innerHTML=({events:evView,mine:()=>schedView(me),people:peopleView,finder:finderView,access:accessView})[tab]();
+  if(tab==="finder")finderRes();
+}
+function setMe(v){me=v;localStorage.setItem("me",v);render()}
+
+// ---------- events ----------
+function lst(t,a){return a.length?`<h4>${t} (${a.length})</h4><ul>${a.map(x=>`<li>${esc(x.p.name)} <small>— ${esc(x.why)}</small></li>`).join("")}</ul>`:""}
+function evView(){
+  const t=iso(new Date()),list=events.filter(e=>showPast||e.date>=t),mp=people.find(p=>p.id===me);
+  const up=events.filter(e=>e.date>=t),nx=up[0];
+  return `<div class="row"><div><h2>Events and rehearsals</h2><p class="sub">Respond to what’s coming up and see who’s free.</p></div><span class="sp"></span>${role?`<button class="pri" onclick="evDlg()">New event</button>`:""}</div><div class="lines"></div>
+  <div class="stats"><div class="stat"><b>${up.length}</b>Upcoming events</div><div class="stat"><b>${people.filter(p=>p.role==="trainee").length}</b>Trainees listed</div><div class="stat"><b>${nx?new Date(nx.date+"T00:00").toLocaleDateString("en-PH",{month:"short",day:"numeric"}):"—"}</b>Next event</div></div>
+  <label><input type="checkbox" ${showPast?"checked":""} onchange="showPast=this.checked;render()"> Show past events</label>`+
+  (list.map(ev=>{
+    const st=people.filter(p=>ev.audience==="all"||p.role==="trainee").map(p=>({p,...status(p,ev)}));
+    const ins=st.filter(x=>x.s==="yes"||x.s==="free"),outs=st.filter(x=>x.s==="no"||x.s==="busy"),mine=mp&&status(mp,ev);
+    return `<article class="card"><div class="row"><div><b>${esc(ev.title)}</b> <span class="tag">${esc(ev.type)}</span><br><small>${dstr(ev.date)} · ${t12(ev.start)}–${t12(ev.end)}${ev.venue?" · "+esc(ev.venue):""}</small></div><span class="sp"></span>${role?`<button onclick="evDlg('${ev.id}')">Edit</button><button onclick="delEv('${ev.id}')">Delete</button>`:""}</div>
+    ${ev.notes?`<p>${esc(ev.notes)}</p>`:""}
+    <p><span class="ok">${ins.length} available</span> · <span class="bad">${outs.length} not available</span> <small>(${ev.audience==="all"?"everyone":"trainees"})</small></p>
+    ${mp?`<div class="me">${esc(mp.name)}: <span class="s-${mine.s}">${LBL[mine.s]}</span> <small>${esc(mine.why)}</small><div class="row"><button onclick="resp('${ev.id}','yes')">I’m available</button><button onclick="resp('${ev.id}','no')">Not available</button><button onclick="resp('${ev.id}',null)">Reset to auto</button></div></div>`:`<p class="hint">Choose your name at the top to respond.</p>`}
+    <details><summary>See who’s in</summary>${lst("Available",ins)}${lst("Not available",outs)}</details></article>`}).join("")||`<p class="empty">No upcoming events yet.</p>`);
+}
+function resp(id,v){db.collection("events").doc(id).update({["responses."+me]:v==null?firebase.firestore.FieldValue.delete():v}).catch(fail)}
+function evDlg(id){
+  const e=events.find(x=>x.id===id)||{title:"",type:"rehearsal",date:iso(new Date()),start:"17:00",end:"19:00",venue:"",audience:"trainees",notes:""};
+  openDlg(`<form onsubmit="saveEv(event,'${id||""}')"><h3>${id?"Edit":"New"} event</h3>${fld("Title","title",e.title,"text",1)}
+  <label>Type<select name="type">${["rehearsal","event","performance"].map(o=>`<option ${o===e.type?"selected":""}>${o}</option>`).join("")}</select></label>
+  ${fld("Date","date",e.date,"date",1)}${fld("Start","start",e.start,"time",1)}${fld("End","end",e.end,"time",1)}${fld("Venue","venue",e.venue)}
+  <label>Needs<select name="audience">${opts({trainees:"Trainees only",all:"Everyone"},e.audience)}</select></label>
+  <label>Notes<textarea name="notes" rows="2">${esc(e.notes)}</textarea></label>
+  <div class="row"><button class="pri">Save event</button><button type="button" onclick="closeDlg()">Cancel</button></div></form>`);
+}
+function saveEv(e,id){
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+  if(t2m(d.end)<=t2m(d.start))return toast("End time must be after start time");
+  d.updatedBy=user.email;
+  (id?db.collection("events").doc(id).update(d):db.collection("events").add({...d,responses:{}})).then(()=>{closeDlg();toast("Event saved")}).catch(fail);
+}
+function delEv(id){if(confirm("Delete this event?"))db.collection("events").doc(id).delete().catch(fail)}
+
+// ---------- schedules ----------
+function schedView(pid){
+  const p=people.find(x=>x.id===pid);
+  if(!p)return `<p class="empty">Choose your name at the top (or tap “I’m not listed”) to see and edit your class schedule.</p>`;
+  const days=[1,2,3,4,5,6].map(d=>({d,l:(p.classes||[]).filter(c=>c.days.includes(d)).sort((a,b)=>t2m(a.start)-t2m(b.start))}));
+  return `<section><div class="row"><h2>${esc(p.name)}</h2><small>${esc(p.course||"")} · ${ROLES[p.role]||""}</small><span class="sp"></span><button class="pri" onclick="classDlg('${p.id}')">+ Add class</button>${role?`<button onclick="editPerson('${p.id}')">Edit info</button><button onclick="delPerson('${p.id}')">Delete</button>`:""}</div>`+
+  days.map(({d,l})=>`<div class="day"><b>${DAYS[d]}</b>${l.map(c=>`<div class="cls"><span>${t12(c.start)}–${t12(c.end)}</span><b>${esc(c.subject)}</b><small>${esc(c.room)}</small><span><button onclick="classDlg('${p.id}','${c.id}')">Edit</button> <button onclick="delClass('${p.id}','${c.id}')" aria-label="Delete class">✕</button></span></div>`).join("")||`<div><small>No class</small></div>`}</div>`).join("")+`</section>`;
+}
+function classDlg(pid,cid){
+  const p=people.find(x=>x.id===pid),c=(p.classes||[]).find(x=>x.id===cid)||{subject:"",days:[],start:"08:00",end:"09:00",room:""};
+  openDlg(`<form onsubmit="saveClass(event,'${pid}','${cid||""}')"><h3>${cid?"Edit":"Add"} class</h3>${fld("Subject","subject",c.subject,"text",1)}
+  <label>Days</label><div class="days">${[1,2,3,4,5,6].map(d=>`<label><input type="checkbox" name="d" value="${d}" ${c.days.includes(d)?"checked":""}>${DAYS[d]}</label>`).join("")}</div>
+  ${fld("Start","start",c.start,"time",1)}${fld("End","end",c.end,"time",1)}${fld("Room","room",c.room)}
+  <div class="row"><button class="pri">Save class</button><button type="button" onclick="closeDlg()">Cancel</button></div></form>`);
+}
+function saveClasses(pid,l){return db.collection("people").doc(pid).update({classes:l,updatedAt:Date.now()}).catch(fail)}
+function saveClass(e,pid,cid){
+  e.preventDefault();const fd=new FormData(e.target),p=people.find(x=>x.id===pid),days=fd.getAll("d").map(Number);
+  if(!days.length)return toast("Pick at least one day");
+  if(t2m(fd.get("end"))<=t2m(fd.get("start")))return toast("End time must be after start time");
+  const c={id:cid||"c"+Date.now().toString(36),days,start:fd.get("start"),end:fd.get("end"),subject:fd.get("subject"),room:fd.get("room")};
+  saveClasses(pid,(p.classes||[]).filter(x=>x.id!==cid).concat(c)).then(()=>{closeDlg();toast("Class saved")});
+}
+function delClass(pid,cid){if(confirm("Remove this class?"))saveClasses(pid,people.find(x=>x.id===pid).classes.filter(c=>c.id!==cid))}
+
+// ---------- people ----------
+function addPerson(){
+  openDlg(`<form onsubmit="savePerson(event)"><h3>Add person</h3>${fld("Full name (Last, First M.)","name","","text",1)}${fld("Course / year","course","")}
+  ${role?`<label>Role<select name="role">${opts(ROLES,"trainee")}</select></label>`:""}
+  <div class="row"><button class="pri">Add</button><button type="button" onclick="closeDlg()">Cancel</button></div></form>`);
+}
+function savePerson(e){
+  e.preventDefault();const d=Object.fromEntries(new FormData(e.target)),ref=db.collection("people").doc();
+  ref.set({name:d.name,course:d.course,role:role?d.role:"trainee",classes:[],updatedAt:Date.now()}).then(()=>{setMe(ref.id);closeDlg();toast("Added. Now add your classes.")}).catch(fail);
+}
+function editPerson(id){const p=people.find(x=>x.id===id);
+  openDlg(`<form onsubmit="saveInfo(event,'${id}')"><h3>Edit info</h3>${fld("Name","name",p.name,"text",1)}${fld("Course / year","course",p.course||"")}<div class="row"><button class="pri">Save</button><button type="button" onclick="closeDlg()">Cancel</button></div></form>`)}
+function saveInfo(e,id){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));db.collection("people").doc(id).update({...d,updatedAt:Date.now()}).then(closeDlg).catch(fail)}
+function delPerson(id){if(confirm("Delete this person and their schedule?")){db.collection("people").doc(id).delete().then(()=>{viewPid="";if(me===id)setMe("")}).catch(fail)}}
+const setRole=(id,v)=>db.collection("people").doc(id).update({role:v}).catch(fail);
+function peopleView(){
+  return `<div class="row"><h2>People (${people.length})</h2><span class="sp"></span><button onclick="addPerson()">+ Add person</button><button onclick="seed()">Import starter schedules</button></div>`+
+  people.map(p=>`<div class="row line ${p.id===viewPid?"sel":""}"><button class="link" onclick="viewPid='${p.id}';render()">${esc(p.name)}</button><small>${esc(p.course||"")}</small><span class="sp"></span><select onchange="setRole('${p.id}',this.value)" aria-label="Role">${opts(ROLES,p.role)}</select><small>${(p.classes||[]).length} classes</small></div>`).join("")+
+  (viewPid?`<hr>`+schedView(viewPid):"");
+}
+
+// ---------- who's free ----------
+function finderView(){
+  return `<h2>Who’s free?</h2><div class="row"><input type="date" value="${f.date}" onchange="f.date=this.value;finderRes()"><input type="time" value="${f.start}" onchange="f.start=this.value;finderRes()"><input type="time" value="${f.end}" onchange="f.end=this.value;finderRes()"><select onchange="f.aud=this.value;finderRes()">${opts({trainee:"Trainees",all:"Everyone"},f.aud)}</select></div><div id="fr"></div>`;
+}
+function finderRes(){
+  const el=$("#fr");if(!el)return;
+  if(!f.date||!f.start||!f.end||t2m(f.end)<=t2m(f.start))return el.innerHTML=`<p class="empty">Pick a date and a valid time range.</p>`;
+  const g=people.filter(p=>f.aud==="all"||p.role==="trainee").map(p=>({p,...status(p,{...f,responses:{}})}));
+  el.innerHTML=`<p><span class="ok">${g.filter(x=>x.s==="free").length} free</span> · <span class="bad">${g.filter(x=>x.s==="busy").length} busy</span></p>`+lst("Free",g.filter(x=>x.s==="free"))+lst("Busy",g.filter(x=>x.s==="busy"));
+}
+
+// ---------- staff access ----------
+function accessView(){
+  return `<h2>Staff access</h2><p class="hint">Anyone listed here can sign in with Google and edit events, roles and schedules.</p>`+
+  staffList.map(s=>`<div class="row line"><span>${esc(s.id)}</span><span class="sp"></span><select onchange="db.collection('staff').doc('${esc(s.id)}').update({role:this.value}).catch(fail)">${opts(STAFF_ROLES,s.role)}</select><button onclick="rmStaff('${esc(s.id)}')">Remove</button></div>`).join("")+
+  `<form class="row" onsubmit="addStaff(event)"><input name="email" type="email" placeholder="gmail address" required><select name="role">${opts(STAFF_ROLES,"member")}</select><button class="pri">Add staff</button></form>`;
+}
+function addStaff(e){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));db.collection("staff").doc(d.email.trim().toLowerCase()).set({role:d.role}).then(()=>e.target.reset()).catch(fail)}
+function rmStaff(id){if(id===user.email.toLowerCase())return toast("You can’t remove yourself");if(confirm("Remove "+id+"?"))db.collection("staff").doc(id).delete().catch(fail)}
+
+// ---------- starter schedules (read from the photos; edit in the app if anything is off) ----------
+const ARCH=[["TTh","07:30","11:00","Arch Design 3 – Creative Design in Architectural Interiors","CAFA203"],["MW","07:30","09:30","Arch. Visual Comm 5 – Visual Techniques 3","CAFA201"],["TTh","11:00","12:30","Building Utilities 1","CAFA201"],["MW","09:30","10:30","Tropical Design","CAFA304"],["MW","10:30","11:30","History of Architecture 2","CAFA304"],["MW","13:00","14:30","Mathematics in the Modern World","CAFA304"],["MW","14:30","16:00","Art Appreciation","CAFA304"],["TTh","13:00","14:30","Readings in Philippine History","CAFA304"],["TTh","14:30","16:00","Science, Technology and Society","CAFA201"],["F","07:30","09:30","PE 3 – Basic Swimming","GYMN6"]];
+const SEED={
+"buelo-tobby-angel":{n:"Buelo, Tobby Angel F.",c:"SHS (Midterm 2 – Term 3)",l:[["MTWTh","07:15","08:15","Creative Industries II"],["MW","08:15","09:15","General Mathematics"],["TTh","08:15","09:15","General Science"],["F","07:15","08:15","General Mathematics"],["F","08:15","09:15","Life and Career Skills"],["MW","09:30","10:30","Pag-aaral ng Kasaysayan at Lipunan"],["TTh","09:30","10:30","Life and Career Skills"],["F","09:30","10:30","General Science"],["MTWTh","10:30","11:30","Mabisang Komunikasyon"],["F","10:30","11:30","Pag-aaral ng Kasaysayan at Lipunan"],["MTWTh","11:30","12:30","Empowerment Technology"]]},
+"delacruz-joshtine-mikel":{n:"Dela Cruz, Joshtine Mikel M.",c:"BS Public Administration · 1st yr",l:[["MW","07:30","09:00","Retorika","GSSR4"],["MW","09:00","10:30","Great Books","GSSR4"],["MW","10:30","12:00","The Contemporary World","CAS FRoom"],["TTh","14:30","16:00","Organization and Management","GSSR4"],["TTh","16:00","17:30","Statistics with Data Analysis","GSSR4"],["TTh","17:30","19:00","Phil. Admin. Thought & Institutions","CAS MRoom"],["W","16:00","18:00","PE 3 – Basic Swimming","SPOOL1"]]},
+"fiedacan-zephaniah":{n:"Fiedacan, Zephaniah M.",c:"1st yr",l:[["MW","08:00","09:00","The University and I","AEC203"],["MW","09:00","10:30","English Enhancement Course","AEC203"],["MW","10:30","12:00","Readings in Philippine History","AEC203"],["TTh","13:00","14:30","Understanding the Self","AEC203"],["TTh","14:30","16:00","Science, Technology and Society","AEC203"],["TTh","16:00","17:30","Mathematics in the Modern World","AEC203"],["T","09:30","11:30","PE 1 – Movement Competency","GYMN1"],["S","09:00","12:00","NSTP 1","GYMN14"]]},
+"gutierrez-miyella-marie":{n:"Gutierrez, Miyella Marie M.",c:"BS Architecture · 2nd yr",l:ARCH},
+"jardiniano-mitzi-althea":{n:"Jardiniano, Mitzi Althea G.",c:"BS Architecture · 2nd yr",l:ARCH},
+"ilagan-john-cyryl":{n:"Ilagan, John Cyryl F.",c:"BS Architecture · 2nd yr",l:ARCH},
+"layug-dominic":{n:"Layug, Dominic S.",c:"SHS BCP 2 (mid-Term 2 – Term 3 schedule)",l:[["MTWTh","07:15","08:15","Basic Accounting"],["MTWTh","08:15","09:15","Effective Communication"],["F","08:15","09:15","General Mathematics"],["MW","09:30","10:30","General Science"],["TTh","09:30","10:30","Pag-aaral ng Kasaysayan at Lipunan"],["F","09:30","10:30","Life and Career Skills"],["MW","10:30","11:30","Life and Career Skills"],["TTh","10:30","11:30","General Mathematics"],["F","10:30","11:30","General Science"],["MTWTh","11:30","12:30","Mabisang Komunikasyon"],["F","11:30","12:30","Pag-aaral ng Kasaysayan at Lipunan"]]},
+"manalo-lyr-zyrem":{n:"Manalo, Lyr Zyrem M.",c:"BS Computer Science · 1st yr",l:[["MW","07:30","09:00","Mathematics in the Modern World","LR03"],["MW","09:00","10:30","English Enhancement Course","LR03"],["MW","10:30","12:00","Understanding the Self","LR03"],["MW","12:00","13:00","The University and I","LR03"],["F","07:30","09:30","PE 1 – Movement Competency","GYM"],["S","07:30","10:30","NSTP 1","GYMN2"],["TTh","14:30","16:00","Introduction to Computing","CL-06"],["TTh","16:00","18:30","Computer Programming 1","CL-06"]]},
+"pastorfide-hanna-nicole":{n:"Pastorfide, Hanna Nicole S.",c:"BS Psychology · 1st yr",l:[["MW","08:00","09:00","The University and I","AEC102"],["MW","09:00","10:30","Science, Technology and Society","AEC102"],["MW","10:30","12:00","Readings in Philippine History","AEC102"],["TTh","13:00","14:30","Mathematics in the Modern World","AEC102"],["TTh","14:30","16:00","Understanding the Self","AEC102"],["TTh","16:00","17:30","English Enhancement Course","AEC102"],["T","07:30","09:30","PE 1 – Movement Competency","GYM"],["S","10:30","13:30","NSTP 1","GYMN8"]]},
+"ranoco-vergel":{n:"Ranoco, Vergel O.",c:"BS Architecture · 1st yr",l:[["TTh","09:30","11:30","Arch Design 1 – Intro to Design","CAFA202"],["MW","13:00","16:30","Arch. Visual Comm 1 – Graphics 1","STUDIO104"],["TTh","07:30","09:30","Arch. Visual Comm 2 – Visual Tech 1","CAFA301"],["TTh","14:00","15:00","Theory of Architecture 1","CAFA202"],["TTh","13:00","14:00","History of Architecture 1","CAFA301"],["MW","07:30","08:30","Solid Mensuration","CAFA305"],["MW","10:30","12:00","English Enhancement Course","CAFA303"],["MW","09:00","10:30","Understanding the Self","CAFA306"],["Th","15:00","17:00","The University and I","CAFA302"],["T","15:00","17:00","PE 1 – Movement Competency","GYMN2"],["S","07:30","10:30","NROTC 1","COV COURT"]]},
+"resurrecion-kessandrei":{n:"Resurrecion, Kessandrei A.",c:"BS Tourism Management",l:[["MW","09:00","10:30","Research in Tourism 1","SR103"],["MW","10:30","12:00","Specialized Food and Beverage Service Ops","SR102"],["TTh","10:30","12:00","Foreign Language 1","SPEECH LAB"],["TTh","13:00","14:30","The Contemporary World","GSSR5"],["TTh","14:30","16:00","Panitikang Filipino","GSSR5"],["TTh","17:30","19:00","Global Culture and Tourism Geography","SR105"],["TTh","19:00","20:30","Tourism Policy and Planning","SR105"]]},
+"unnamed-civil-engineering":{n:"(Rename me) Civil Engineering student",c:"BS Civil Engineering",l:[["M","08:30","10:30","Geology for Civil Engineers","CET215"],["MW","10:30","12:00","Calculus 2 (Integral)","CET216"],["M","13:00","15:00","Dynamics of Rigid Bodies","CET217"],["MW","16:00","17:30","Environmental Science and Engineering","CET106"],["MW","17:30","19:00","Fundamentals of Surveying (lec)","CET107"],["T","17:30","20:30","Statics of Rigid Bodies","CET108"],["TTh","13:00","14:30","Readings in Philippine History","AEC109"],["W","07:30","10:30","Fundamentals of Surveying (lab)","FIELD2"],["Th","08:30","10:30","Civil Engineering Orientation","CET215"],["Th","15:00","17:00","PE 3 – Basic Swimming","GYMN4"],["F","07:30","10:30","Computer Aided Drafting","CET121"]]}
+};
+async function seed(){
+  const have=new Set(people.map(p=>p.id)),b=db.batch();let n=0;
+  for(const[id,p]of Object.entries(SEED)){if(have.has(id))continue;n++;
+    b.set(db.collection("people").doc(id),{name:p.n,course:p.c,role:"trainee",updatedAt:Date.now(),classes:p.l.map((r,i)=>({id:"s"+i,days:parseDays(r[0]),start:r[1],end:r[2],subject:r[3],room:r[4]||""}))})}
+  if(!n)return toast("Starter schedules are already imported");
+  b.commit().then(()=>toast(n+" schedules imported")).catch(fail);
+}
+render();
+</script></body></html>
